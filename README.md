@@ -36,9 +36,10 @@
     pip install numpy scikit-build-core
     ```
 3.  Install DeePTB:
+   
     please refer to its documentation: <https://github.com/deepmodeling/DeePTB>
 
-3.  Install the package:
+4.  Install the package:
     ```bash
     pip install .
     ```
