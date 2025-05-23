@@ -1,0 +1,54 @@
+[build-system]
+requires = ["scikit-build-core", "numpy",  "setuptools>=45", "setuptools-scm[toml]>=6.2"]
+build-backend = "scikit_build_core.build"
+
+[tool.setuptools_scm]
+write_to = "tboptc/_version.py"
+version_scheme = "no-guess-dev"
+local_scheme = "dirty-tag"
+fallback_version = "0.0.0"
+
+[project]
+name = "tboptc"
+dynamic = ["version"]
+description = "A python package optical spectra calculations for DeePTB-SK models."
+authors = [{name = "Q. Gu", email = "guqq@pku.edu.cn"}]
+readme = "README.md"
+license = {text = "LGPL-3.0"}
+requires-python = ">=3.8"
+dependencies = [
+    "pytest>=7.2.0",
+    "pytest-order==1.2.0",
+    "numpy",
+    "scipy",
+    "spglib",
+    "matplotlib",
+    "torch>=1.13.0",
+    "ase",
+    "pyyaml",
+    "future",
+    "dargs",
+    "dptb"
+]
+
+[project.urls]
+repository = "https://github.com/DeePTB-Lab/TBoptc"
+
+[project.optional-dependencies]
+fortran = []
+
+[project.scripts]
+tboptc = "tboptc.__main__:main"
+
+[tool.scikit-build]
+cmake.minimum-version = "3.17"
+cmake.build-type = "Release"
+cmake.verbose = true
+logging.level = "DEBUG"
+experimental = true
+
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.setuptools_scm"
+
+[tool.scikit-build.cmake.define]
+BUILD_FORTRAN = {env="BUILD_FORTRAN", default="ON"}
