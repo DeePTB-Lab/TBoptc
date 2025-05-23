@@ -17,7 +17,7 @@ def run_options():
     doc_structure = "the structure to run the task"
     doc_gui = "To use the GUI or not"
     doc_device = "The device to run the calculation, choose among `cpu` and `cuda[:int]`, Default: None. default None means to use the device seeting in the model ckpt file."
-    doc_dtype = """The digital number's precison, choose among: 
+    doc_dtype = """The digital number's precision, choose among: 
                     Default: None,
                         - `float32`: indicating torch.float32
                         - `float64`: indicating torch.float64

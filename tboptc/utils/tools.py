@@ -44,12 +44,12 @@ def j_loader(filename: Union[str, Path]) -> Dict[str, Any]:
 def j_must_have(
     jdata: Dict[str, "_DICT_VAL"], key: str, deprecated_key: List[str] = []
 ) -> "_DICT_VAL":
-    """Assert that supplied dictionary conaines specified key.
+    """Assert that the supplied dictionary contains the specified key.
 
     Returns
     -------
     _DICT_VAL
-        value that was store unde supplied key
+        value that is stored under the supplied key
 
     Raises
     ------
