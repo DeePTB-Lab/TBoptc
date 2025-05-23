@@ -12,7 +12,7 @@ fallback_version = "0.0.0"
 name = "tboptc"
 dynamic = ["version"]
 description = "A python package optical spectra calculations for DeePTB-SK models."
-authors = [{name = "Q. Gu", email = "guqq@pku.edu.cn"}]
+authors = [{name = "Q. Gu", email = "guqq@ustc.edu.cn"}]
 readme = "README.md"
 license = {text = "LGPL-3.0"}
 requires-python = ">=3.8"
