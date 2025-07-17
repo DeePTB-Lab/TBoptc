@@ -8,7 +8,7 @@ from tboptc.utils.argcheck import normalize_run
 from tboptc.utils.tools import j_loader
 from tboptc.utils.tools import j_must_have
 from tboptc.calc.optical_cond import AcCond
-
+from dptb.nn.build import build_model
 
 log = logging.getLogger(__name__)
 

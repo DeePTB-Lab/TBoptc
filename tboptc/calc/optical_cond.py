@@ -14,12 +14,20 @@ from tboptc.dptbapi import HR2HK
 from tboptc.dptbapi import  kmesh_sampling_negf
 from tboptc.dptbapi.hr2dhk import Hr2dHk
 from dptb.utils.argcheck import get_cutoffs_from_model_options
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Dict,
+    List,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+)
+from copy import deepcopy
 
-
-try:
-    from dptb.postprocess.fortran import ac_cond as acdf2py
-except ImportError:
-    acdf2py = None
+from tboptc.fortran import ac_cond as acdf2py
 
 log = logging.getLogger(__name__)
 

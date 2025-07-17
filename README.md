@@ -39,7 +39,7 @@
 
 3.  Install the package:
     ```bash
-    pip install .
+    python -m pip install .
     ```
 ## Build Options (for Developers)
 The project uses scikit-build-core and CMake for building. The main build options are defined in CMakeLists.txt :

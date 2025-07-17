@@ -23,7 +23,7 @@ class _AppFilter(logging.Filter):
     """Add field `app_name` to log messages."""
 
     def filter(self, record):
-        record.app_name = "DEEPTB"
+        record.app_name = "TBoptc"
         return True
 
 
