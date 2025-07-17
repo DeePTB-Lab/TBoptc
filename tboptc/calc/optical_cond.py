@@ -13,6 +13,8 @@ from tboptc.dptbapi import AtomicData, AtomicDataDict
 from tboptc.dptbapi import HR2HK
 from tboptc.dptbapi import  kmesh_sampling_negf
 from tboptc.dptbapi.hr2dhk import Hr2dHk
+from dptb.utils.argcheck import get_cutoffs_from_model_options
+
 
 try:
     from dptb.postprocess.fortran import ac_cond as acdf2py
@@ -38,11 +40,14 @@ class AcCond:
         if acdf2py is None:
             log.warning('ac_cond_f is not available, please install the fortran code to calculate the AC conductivity')
             sys.exit(1)
-
+        r_max, er_max, oer_max  = get_cutoffs_from_model_options(model.model_options)
+        self.cutoffs = {'r_max': r_max, 'er_max': er_max, 'oer_max': oer_max}
+    
     def get_accond(self,
                         struct,
-                        AtomicData_options,
                         emax,
+                        AtomicData_options:dict=None,
+                        pbc:Union[bool,list]=None,
                         num_omega= 1000,
                         mesh_grid=[1,1,1],
                         nk_per_loop=None,
@@ -58,7 +63,32 @@ class AcCond:
 
         log.info('<><><><>'*5)
         # 调用from_ase方法，生成一个硅的AtomicData类型数据
-        dataset = AtomicData.from_ase(atoms=read(struct),**AtomicData_options)
+        atomic_options = deepcopy(self.cutoffs)
+        if pbc is not None:
+             atomic_options.update({'pbc': pbc})
+
+        if AtomicData_options is not None:
+            if AtomicData_options.get('r_max', None) is not None:
+                if atomic_options['r_max'] != AtomicData_options.get('r_max'):
+                    atomic_options['r_max'] = AtomicData_options.get('r_max')
+                    log.warning(f'Overwrite the r_max setting in the model with the r_max setting in the AtomicData_options: {AtomicData_options.get("r_max")}')
+                    log.warning(f'This is very dangerous, please make sure you know what you are doing.')
+            if AtomicData_options.get('er_max', None) is not None:
+                if atomic_options['er_max'] != AtomicData_options.get('er_max'):
+                    atomic_options['er_max'] = AtomicData_options.get('er_max')
+                    log.warning(f'Overwrite the er_max setting in the model with the er_max setting in the AtomicData_options: {AtomicData_options.get("er_max")}')
+                    log.warning(f'This is very dangerous, please make sure you know what you are doing.')
+            if AtomicData_options.get('oer_max', None) is not None:
+                if atomic_options['oer_max'] != AtomicData_options.get('oer_max'):
+                    atomic_options['oer_max'] = AtomicData_options.get('oer_max')
+                    log.warning(f'Overwrite the oer_max setting in the model with the oer_max setting in the AtomicData_options: {AtomicData_options.get("oer_max")}')
+                    log.warning(f'This is very dangerous, please make sure you know what you are doing.')    
+        else:
+            if atomic_options['r_max'] is None:
+                log.error('The r_max is not provided in model_options, please provide it in AtomicData_options.')
+                raise RuntimeError('The r_max is not provided in model_options, please provide it in AtomicData_options.')
+            
+        dataset = AtomicData.from_ase(atoms=read(struct),**atomic_options)
         data = AtomicData.to_AtomicDataDict(dataset)
         if valence_e is not None and abs(gap_corr) > 1e-3:
             uniq_type, counts = np.unique(data['atomic_numbers'].numpy(), return_counts=True)
