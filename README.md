@@ -35,9 +35,12 @@
     ```bash
     pip install numpy scikit-build-core
     ```
-    To install DeePTB, please refer to its documentation: <https://github.com/deepmodeling/DeePTB>
 
-3.  Install the package:
+3.  Install DeePTB:
+   
+    please refer to its documentation: <https://github.com/deepmodeling/DeePTB>
+
+4.  Install the package:
     ```bash
     python -m pip install .
     ```
@@ -79,3 +82,4 @@ This project is licensed under the LGPL-3.0 License.
 ## Contact
 - Author: Q. Gu ( guqq@ustc.edu.cn )
 - Repository: https://github.com/DeePTB-Lab/TBoptc
+
