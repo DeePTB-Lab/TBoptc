@@ -5,7 +5,7 @@ import torch
 from dptb.utils.constants import h_all_types, anglrMId, atomic_num_dict, atomic_num_dict_r
 from dptb.data.transforms import OrbitalMapper
 from dptb.data import AtomicDataDict
-from tboptc.tools import float2comlex
+from tboptc.utils.tools import float2comlex
 
 class Hr2dHk(torch.nn.Module):
     def __init__(

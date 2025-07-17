@@ -1,5 +1,33 @@
 import torch
 from typing import Any, Dict, List, Union
+from pathlib import Path
+import json
+import yaml
+import logging
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Dict,
+    List,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+)
+log = logging.getLogger(__name__)
+
+
+if TYPE_CHECKING:
+    _DICT_VAL = TypeVar("_DICT_VAL")
+    _OBJ = TypeVar("_OBJ")
+    try:
+        from typing import Literal  # python >3.6
+    except ImportError:
+        from typing_extensions import Literal  # type: ignore
+    _ACTIVATION = Literal["relu", "relu6", "softplus", "sigmoid", "tanh", "gelu", "gelu_tf"]
+    _PRECISION = Literal["default", "float16", "float32", "float64"]
+
 
 def float2comlex(dtype):
     if isinstance(dtype, str):

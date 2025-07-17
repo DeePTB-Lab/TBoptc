@@ -8,7 +8,7 @@ from tboptc.utils.argcheck import normalize_run
 from tboptc.utils.tools import j_loader
 from tboptc.utils.tools import j_must_have
 from tboptc.calc.optical_cond import AcCond
-
+from dptb.nn.build import build_model
 
 log = logging.getLogger(__name__)
 
@@ -74,7 +74,8 @@ def run(
         accondcal = AcCond(model=model, results_path=results_path)
         
         accondcal.get_accond(struct=struct_file, 
-                                AtomicData_options=jdata['AtomicData_options'], 
+                                AtomicData_options=jdata.get('AtomicData_options',None),
+                                pbc = jdata['task_options'].get('pbc',None),
                                 emax=jdata['task_options'].get('emax'),
                                 num_omega=jdata['task_options'].get('num_omega',1000),
                                 mesh_grid=jdata['task_options'].get('mesh_grid',[1,1,1]),
