@@ -35,13 +35,14 @@
     ```bash
     pip install numpy scikit-build-core
     ```
+
 3.  Install DeePTB:
    
     please refer to its documentation: <https://github.com/deepmodeling/DeePTB>
 
 4.  Install the package:
     ```bash
-    pip install .
+    python -m pip install .
     ```
 ## Build Options (for Developers)
 The project uses scikit-build-core and CMake for building. The main build options are defined in CMakeLists.txt :
@@ -81,3 +82,4 @@ This project is licensed under the LGPL-3.0 License.
 ## Contact
 - Author: Q. Gu ( guqq@ustc.edu.cn )
 - Repository: https://github.com/DeePTB-Lab/TBoptc
+

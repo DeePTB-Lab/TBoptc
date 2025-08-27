@@ -1,0 +1,18 @@
+{
+    "task_options":{
+        "task":"ac_cond",
+        "emax": 8,
+        "num_omega": 800,
+        "mesh_grid": [10, 10, 10],
+        "nk_per_loop": 1000,
+        "delta": 0.03,
+        "e_fermi": -8.104654952217583,
+        "valence_e": null,
+        "gap_corr": 0,
+        "T": 300,
+        "direction": "xx",
+        "g_s": 2,
+        "pbc":true
+    },
+    "AtomicData_options": {"r_max": 5.1, "er_max": 5.1, "oer_max":1.6}
+}

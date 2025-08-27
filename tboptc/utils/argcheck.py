@@ -32,6 +32,19 @@ def run_options():
     ]
     return Argument("run_op", dict, args)
 
+def AtomicData_options_sub():
+    doc_r_max = "the cutoff value for bond considering in TB model."
+    doc_er_max = "The cutoff value for environment for each site for env correction model. should set for nnsk+env correction model."
+    doc_oer_max = "The cutoff value for onsite environment for nnsk model, for now only need to set in strain and NRL mode."
+
+    args = [
+        Argument("r_max", [float, int, dict], optional=False, doc=doc_r_max, default=4.0),
+        Argument("er_max", [float, int, dict], optional=True, doc=doc_er_max, default=None),
+        Argument("oer_max", [float, int, dict], optional=True, doc=doc_oer_max,default=None)
+    ]
+
+    return Argument("AtomicData_options", dict, optional=True, sub_fields=args, sub_variants=[], doc="", default=None)
+
 def task_options():
     doc_task = '''The string define the task  includes: 
                     - `ac_cond`: for ac optical conductivity.
@@ -53,9 +66,11 @@ def ac_cond():
     doc_T = ""
     doc_direction = ""
     doc_g_s = ""
+    doc_pbc = ""
 
     argu = [
         Argument("emax", float, optional=False, default=10, doc=doc_emax),
+        Argument("pbc", [None, bool, list], optional=True, doc=doc_pbc, default=None),
         Argument("num_omega", int, optional=False, default=1000, doc=doc_num_omega),
         Argument("mesh_grid", list, optional=False, default=[1,1,1], doc=doc_mesh_grid),
         Argument("nk_per_loop", [int, None], optional=True, default=None, doc=doc_nk_per_loop),
