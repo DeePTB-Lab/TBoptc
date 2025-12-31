@@ -100,11 +100,12 @@ class Hr2dHk(torch.nn.Module):
 
         atom_id_to_indices = {}
         ist = 0
+        
         for i, oblock in enumerate(onsite_block):
             mask = self.idp.mask_to_basis[data[AtomicDataDict.ATOM_TYPE_KEY].flatten()[i]]
             masked_oblock = oblock[mask][:,mask]
-            for idirec in uniq_direcs:
-                dHdk[idirec][:,ist:ist+masked_oblock.shape[0],ist:ist+masked_oblock.shape[1]] = masked_oblock.squeeze(0)
+            #for idirec in uniq_direcs:
+            #    dHdk[idirec][:,ist:ist+masked_oblock.shape[0],ist:ist+masked_oblock.shape[1]] = masked_oblock.squeeze(0)
             atom_id_to_indices[i] = slice(ist, ist+masked_oblock.shape[0])
             ist += masked_oblock.shape[0]
        
