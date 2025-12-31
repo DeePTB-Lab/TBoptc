@@ -1,43 +1,52 @@
 cmake_minimum_required(VERSION 3.17...3.26)
 
 option(BUILD_FORTRAN "Build Fortran extensions" ON)
-option(USE_INTEL "Use Intel compilers" ON)
 option(USE_OPENMP "Use OpenMP" ON)
 
-set(CMAKE_Fortran_FLAGS "-fpp -O3 -xHost -qopenmp -ipo -heap-arrays 32 -unroll -fma -align")
-set(CMAKE_C_FLAGS  "-O3 -xHost -ipo -fma -align")
-
-
 if(BUILD_FORTRAN)
-    if(USE_INTEL)
-        set(CMAKE_C_COMPILER "icx")
-        set(CMAKE_Fortran_COMPILER "ifx")
+    # Detect OS and architecture
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        set(MACOS TRUE)
+    elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        set(LINUX TRUE)
+    endif()
+
+    # Find compilers
+    find_program(ICX_COMPILER icx)
+    find_program(IFX_COMPILER ifx)
+    find_program(GCC_COMPILER gcc)
+    find_program(GFORTRAN_COMPILER gfortran)
+
+    # Set compilers and flags
+    if(ICX_COMPILER AND IFX_COMPILER)
+        set(CMAKE_C_COMPILER ${ICX_COMPILER})
+        set(CMAKE_Fortran_COMPILER ${IFX_COMPILER})
+        set(CMAKE_Fortran_FLAGS "-fpp -O3 -xHost -qopenmp -ipo -heap-arrays 32 -unroll -fma -align")
+        set(CMAKE_C_FLAGS  "-O3 -xHost -ipo -fma -align")
+    elseif(GCC_COMPILER AND GFORTRAN_COMPILER)
+        set(CMAKE_C_COMPILER ${GCC_COMPILER})
+        set(CMAKE_Fortran_COMPILER ${GFORTRAN_COMPILER})
+        set(CMAKE_C_FLAGS "-O3")
+        set(CMAKE_Fortran_FLAGS "-O3")
     else()
-        # 使用默认的编译器
+        message(FATAL_ERROR "Could not find a compatible C and Fortran compiler.")
     endif()
 
     project(${SKBUILD_PROJECT_NAME} LANGUAGES C Fortran)
     
-    # 设置编译器标志
-    #set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O3 -fPIC")
-    
     if(USE_OPENMP)
-        find_package(OpenMP REQUIRED)
-        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${OpenMP_Fortran_FLAGS}")
+        find_package(OpenMP)
+        if(OpenMP_FOUND)
+            message(STATUS "OpenMP found, enabling OpenMP support.")
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+            set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${OpenMP_Fortran_FLAGS}")
+        else()
+            message(WARNING "OpenMP not found, disabling OpenMP support.")
+        endif()
     endif()
 
     # Search for packages and commands
     find_package(Python COMPONENTS Interpreter Development.Module NumPy REQUIRED)
-
-    #------------------------------ Compiler options ------------------------------#
-    # Detect compiler vendor
-    if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-      set(VENDOR "gnu")
-    elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-      set(VENDOR "intel")
-    else()
-      message(FATAL_ERROR "Unsupported Fortran compiler ${CMAKE_Fortran_COMPILER}")
-    endif()
 
     #----------------------------- Fortran extension ------------------------------#
     # Define the fortranobject
