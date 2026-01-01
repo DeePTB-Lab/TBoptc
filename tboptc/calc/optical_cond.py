@@ -194,7 +194,10 @@ class AcCond:
                 eigs = torch.as_tensor(eigs, dtype=torch.float32)
                 eigv = torch.as_tensor(eigv, dtype=torch.complex64)
             else:
-                eigs, eigv = torch.linalg.eigh(data['hamiltonian'])
+                eigs, eigv = np.linalg.eigh(data['hamiltonian'].detach().numpy())
+                eigs = torch.as_tensor(eigs, dtype=torch.float32)
+                eigv = torch.as_tensor(eigv, dtype=torch.complex64)
+                #eigs, eigv  = scipy.linalg.eigh(data['hamiltonian'].detach().numpy())
 
             if num_val is not None and abs(gap_corr) > 1e-3:
                 log.info(f'    - gap correction is applied with {gap_corr}')
